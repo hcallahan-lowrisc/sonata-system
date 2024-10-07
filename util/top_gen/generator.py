@@ -294,7 +294,7 @@ def output_pins_iter(
                     yield OutputPin(pin.name, f"_{i}", f"[{i}]", [outputs[i]])
 
 
-def generate_top(config: TopConfig) -> None:
+def generate_top(config: TopConfig, system_info_generate: bool) -> None:
     """Generate a top from a top configuration."""
 
     pinmux_ios_to_blocks = list(ios_to_blocks_iter(config))
@@ -330,6 +330,7 @@ def generate_top(config: TopConfig) -> None:
         ("rtl/templates/sonata_pkg.sv.tpl", "rtl/system/sonata_pkg.sv"),
         ("rtl/templates/pinmux.sv.tpl", "rtl/system/pinmux.sv"),
         ("doc/ip/pinmux.md.tpl", "doc/ip/pinmux.md"),
+        ("rtl/templates/system_info.sv.tpl", "rtl/system/system_info.sv"),
     ):
         print("Generating from template: " + template_file)
         content = Template(filename=template_file).render(**template_variables)
