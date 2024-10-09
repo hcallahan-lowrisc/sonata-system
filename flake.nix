@@ -114,10 +114,10 @@
         ];
       };
       sonata-simulator-lint = pkgs.stdenvNoCC.mkDerivation {
-        name = "sonta-simulator-lint";
+        name = "sonata-simulator-lint";
         src = sonataSimulatorFileset;
         buildInputs = with pkgs; [libelf zlib];
-        nativeBuildInputs = [pkgs.verilator pythonEnv];
+        nativeBuildInputs = [pkgs.verilator pythonEnv pkgs.git];
         dontBuild = true;
         doCheck = true;
         checkPhase = ''
