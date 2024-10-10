@@ -22,34 +22,26 @@ def generate_system_info() -> None:
     print(
         "System info: Git hash " + sha + " " + ("DIRTY!" if dirty else "clean")
     )
-    repo_path = Path(repo.working_dir)
     system_info = SystemInfo(sha, dirty)
+    system_info_dir = Path(__file__).parents[1]
 
     for template, output in (
         (
-            Path.joinpath(
-                repo_path, "rtl/ip/system_info/templates/system_info.sv.tpl"
-            ),
+            system_info_dir / "templates" / "system_info.sv.tpl",
             Path("system_info.sv"),
         ),
         (
-            Path.joinpath(
-                repo_path, "rtl/ip/system_info/templates/system_info.core.tpl"
-            ),
+            system_info_dir / "templates" / "system_info.core.tpl",
             Path("system_info.core"),
         ),
         # TODO is there a way not to have to copy these over to the
         # auto-generated folder?
         (
-            Path.joinpath(
-                repo_path, "rtl/ip/system_info/rtl/system_info_reg_pkg.sv"
-            ),
+            system_info_dir / "rtl" / "system_info_reg_pkg.sv",
             Path("system_info_reg_pkg.sv"),
         ),
         (
-            Path.joinpath(
-                repo_path, "rtl/ip/system_info/rtl/system_info_reg_top.sv"
-            ),
+            system_info_dir / "rtl" / "system_info_reg_top.sv",
             Path("system_info_reg_top.sv"),
         ),
     ):
