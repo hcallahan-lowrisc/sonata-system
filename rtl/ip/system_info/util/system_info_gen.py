@@ -6,7 +6,7 @@
 from pathlib import Path
 from typing import NamedTuple
 
-import git
+import os
 from mako.template import Template
 
 
@@ -16,13 +16,16 @@ class SystemInfo(NamedTuple):
 
 
 def generate_system_info() -> None:
-    repo = git.Repo(search_parent_directories=True)
-    sha = repo.head.object.hexsha[0:8]
-    dirty = repo.is_dirty()
+
+    commit = os.environ.get('COMMIT')
+    if (commit is None) or (commit == "dirty"):
+        system_info = SystemInfo("", True)
+    else:
+        system_info = SystemInfo(commit, False)
+
     print(
-        "System info: Git hash " + sha + " " + ("DIRTY!" if dirty else "clean")
+        "System info: Git hash " + system_info.commit_hash + " " + ("DIRTY!" if system_info.dirty else "clean")
     )
-    system_info = SystemInfo(sha, dirty)
     system_info_dir = Path(__file__).parents[1]
 
     for template, output in (

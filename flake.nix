@@ -25,6 +25,7 @@
   } @ inputs: let
     system_outputs = system: let
       version = "0.0.1";
+      COMMIT = if (self ? rev) then self.shortRev else "dirty";
 
       pkgs = import nixpkgs {
         inherit system;
@@ -118,6 +119,7 @@
         src = sonataSimulatorFileset;
         buildInputs = with pkgs; [libelf zlib];
         nativeBuildInputs = [pkgs.verilator pythonEnv pkgs.git];
+        inherit COMMIT;
         dontBuild = true;
         doCheck = true;
         checkPhase = ''
@@ -133,6 +135,7 @@
         src = sonataSimulatorFileset;
         buildInputs = with pkgs; [libelf zlib];
         nativeBuildInputs = [pkgs.verilator pythonEnv];
+        inherit COMMIT;
         buildPhase = ''
           HOME=$TMPDIR fusesoc --cores-root=. run \
             --target=sim --setup --build lowrisc:sonata:system \
